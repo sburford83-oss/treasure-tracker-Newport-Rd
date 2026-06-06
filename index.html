@@ -1,67 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Treasure">
-<title>Valegate Treasure Tracker</title>
-<!-- Include your CSS here, ensuring the .manager-page, .manager-action-grid, and .row classes are defined as previously established -->
+<style>
+  :root { --bg: #0a0a0a; --card: #161616; --gold: #d4af37; --text: #ffffff; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, sans-serif; margin: 0; }
+  
+  /* Modern Glassmorphism Cards */
+  .card { background: var(--card); border-radius: 20px; padding: 20px; margin: 15px; border: 1px solid #333; }
+  
+  /* High-Impact Treasure Button */
+  .treasure-action {
+    width: 100%; height: 160px; border-radius: 30px;
+    background: linear-gradient(135deg, #1f1a0a, #4a3d16);
+    border: 1px solid var(--gold); display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 10px;
+  }
+  
+  /* Leaderboard Styling */
+  .rank-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #222; }
+</style>
 </head>
 <body>
 
-<section class="page manager-page" id="managerPage" style="display:none">
-  <!-- Weekly Top Recruiters Leaderboard -->
-  <section class="card">
-    <div class="leader-head"><div class="eyebrow">Weekly Top Recruiters</div><div>🏆</div></div>
+<div class="app">
+  <!-- Staff Interaction Area -->
+  <div class="card">
+    <button class="treasure-action" onclick="addTreasure()">
+      <div style="font-size: 40px;">💎</div>
+      <b style="font-size: 20px;">FOUND TREASURE</b>
+    </button>
+  </div>
+
+  <!-- Real-time Stats -->
+  <div class="card">
+    <div style="color: var(--gold); font-size: 12px; text-transform: uppercase;">Store Progress</div>
+    <h2 id="todayTotal" style="font-size: 48px; margin: 5px 0;">0 / 15</h2>
+  </div>
+
+  <!-- Manager Weekly Leaderboard -->
+  <section class="card" id="managerPage">
+    <div style="margin-bottom: 15px; font-weight: bold;">Weekly Top Recruiters</div>
     <div id="weeklyLeaderboard"></div>
   </section>
-
-  <!-- Manager Quick-Actions -->
-  <section class="card">
-    <div class="leader-head"><div class="eyebrow">Manager Quick-Actions</div><div>⚡</div></div>
-    <div class="manager-action-grid">
-      <button class="manager-action primary" onclick="copySummary()">Copy Daily Summary</button>
-      <button class="manager-action danger" onclick="deleteLastTreasure()">Delete Last Entry</button>
-      <button class="manager-action" onclick="resetWeekly()">Reset Weekly Totals<span>Clears only previous days in this week.</span></button>
-      <button class="manager-action" onclick="resetToday()">Reset Today<span>Clears only today’s Treasure entries.</span></button>
-    </div>
-  </section>
-</section>
-
-<script>
-// Add this logic to your existing render function
-if (document.getElementById("weeklyLeaderboard")) {
-  const wList = Object.entries(weekCounts()).sort((a, b) => b[1] - a[1]);
-  const lb = document.getElementById("weeklyLeaderboard");
-  lb.innerHTML = "";
-  
-  if (wList.length === 0) {
-    lb.innerHTML = "<p style='color:#7b684f; text-align:center;'>No data yet this week.</p>";
-  } else {
-    wList.slice(0, 3).forEach((item, index) => {
-      const row = document.createElement("div");
-      row.className = "row";
-      row.innerHTML = `<div class="medal">${index + 1}</div><div>${item[0]}</div><div class="score">${item[1]}</div>`;
-      lb.appendChild(row);
-    });
-  }
-}
-
-// Add this function to your script section
-window.resetWeekly = function() {
-  const pin = prompt("Enter reset code:");
-  if (pin !== RESET_PIN) {
-    alert("Incorrect reset code.");
-    return;
-  }
-  if (confirm("This will clear all entries from this week (except today). Continue?")) {
-    const toRemove = entries.filter(e => e.week === thisWeekKey() && e.date !== todayKey());
-    Promise.all(toRemove.map(e => remove(ref(db, "stores/valegate/entries/" + e.id))))
-      .then(() => alert("Weekly totals reset (today's entries kept)."))
-      .catch(err => alert("Error resetting weekly: " + err.message));
-  }
-};
-</script>
+</div>
 </body>
 </html>
