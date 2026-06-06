@@ -1,47 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valegate Treasure Tracker</title>
 <style>
-  :root { --bg: #0a0a0a; --card: #161616; --gold: #d4af37; --text: #ffffff; }
-  body { background: var(--bg); color: var(--text); font-family: -apple-system, sans-serif; margin: 0; }
-  
-  /* Modern Glassmorphism Cards */
-  .card { background: var(--card); border-radius: 20px; padding: 20px; margin: 15px; border: 1px solid #333; }
-  
-  /* High-Impact Treasure Button */
-  .treasure-action {
-    width: 100%; height: 160px; border-radius: 30px;
-    background: linear-gradient(135deg, #1f1a0a, #4a3d16);
-    border: 1px solid var(--gold); display: flex; flex-direction: column;
-    align-items: center; justify-content: center; gap: 10px;
-  }
-  
-  /* Leaderboard Styling */
-  .rank-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #222; }
+/* PREMIUM GOLD & BROWN THEME */
+:root {
+    --bg-deep: #1f1106;
+    --gold-gradient: linear-gradient(135deg, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+    --card-bg: #2d1808;
+    --text-gold: #d4af37;
+    --text-light: #eaddc4;
+}
+
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg-deep);
+    color: var(--text-light);
+}
+
+.app {
+    max-width: 480px;
+    margin: 0 auto;
+    min-height: 100vh;
+    padding: 20px;
+    background: radial-gradient(circle at 50% 0%, #3d2616, #1f1106);
+}
+
+header { text-align: center; margin-bottom: 30px; }
+
+.gold-title {
+    background: var(--gold-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 2.5rem;
+    font-weight: 900;
+    text-transform: uppercase;
+}
+
+.main-card {
+    background: var(--card-bg);
+    border: 1px solid #4b2b10;
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    text-align: center;
+}
+
+.option-c-btn {
+    width: 180px; 
+    height: 180px;
+    border-radius: 50%;
+    margin: 20px auto;
+    background: var(--gold-gradient);
+    border: none;
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 10px 20px rgba(184, 137, 61, 0.3);
+}
+
+.option-c-btn b { 
+    color: #1f1106; 
+    font-size: 1.2rem; 
+    text-transform: uppercase; 
+}
+
+.data-row {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 15px;
+    margin-top: 10px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    border-left: 4px solid var(--text-gold);
+}
+
+.label { color: var(--text-gold); font-size: 0.8rem; text-transform: uppercase; }
+.value { font-weight: bold; font-size: 1.1rem; }
 </style>
 </head>
 <body>
 
 <div class="app">
-  <!-- Staff Interaction Area -->
-  <div class="card">
-    <button class="treasure-action" onclick="addTreasure()">
-      <div style="font-size: 40px;">💎</div>
-      <b style="font-size: 20px;">FOUND TREASURE</b>
-    </button>
-  </div>
+    <header>
+        <h1 class="gold-title">Treasure</h1>
+    </header>
 
-  <!-- Real-time Stats -->
-  <div class="card">
-    <div style="color: var(--gold); font-size: 12px; text-transform: uppercase;">Store Progress</div>
-    <h2 id="todayTotal" style="font-size: 48px; margin: 5px 0;">0 / 15</h2>
-  </div>
-
-  <!-- Manager Weekly Leaderboard -->
-  <section class="card" id="managerPage">
-    <div style="margin-bottom: 15px; font-weight: bold;">Weekly Top Recruiters</div>
-    <div id="weeklyLeaderboard"></div>
-  </section>
+    <div class="main-card">
+        <button class="option-c-btn" onclick="addTreasure()"><b>Find<br>Treasure</b></button>
+        
+        <div id="stats">
+            <div class="data-row">
+                <span class="label">Net Sales</span>
+                <span class="value" id="net-sales">£0.00</span>
+            </div>
+            <div class="data-row">
+                <span class="label">Total Refunds</span>
+                <span class="value" id="total-refunds">£0.00</span>
+            </div>
+        </div>
+    </div>
 </div>
+
+<script>
+    function addTreasure() {
+        // Logic remains the same, style is now inherited
+        alert("Treasure found!");
+    }
+</script>
 </body>
 </html>
