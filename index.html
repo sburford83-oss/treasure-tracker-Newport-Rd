@@ -1,42 +1,738 @@
-🔔
-THANK YOU!
-£1 donation secured
-🔇 Sound Off
-TK
-King's Trust
-£1 DONATIONS
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Kings Trust">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#e30613">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="manifest" href="manifest.json">
+<title>King's Trust £1 Donation Tracker</title>
 
-Live
-VALEGATE
-£1 Donation Tracker
-Weekly target runs Sunday to Saturday night
-THIS WEEK RAISED
-£0 / £180
-Sunday → Saturday
-0%
-£180 left to hit target
-£1
-ADD £1 DONATION
-Tap once when a customer donates
-Today £
-0
-👑 TODAY'S LEADER
-No leader yet
-£0 today
-🏆 WEEKLY CHAMP
-No champion yet
-£0 this week
-LIVE ACTIVITY
-✨
-No donations yet today.
-TODAY'S TOP FUNDRAISERS
-🏅
-Loading leaderboard...
-🏠
-Home
-📈
-Stats
-⚙️
-Manager
-👤
-Me
+<style>
+:root{
+  --max:430px;
+  --pad:14px;
+  --red:#e30613;
+  --red-dark:#8f1018;
+  --burgundy:#6e1423;
+  --orange:#d98b2b;
+  --cream:#fff7ed;
+  --card:#fffdf8;
+  --ink:#241313;
+  --muted:#7c625a;
+  --gold:#d9a441;
+  --navH:72px;
+}
+*{box-sizing:border-box}
+html,body{
+  margin:0;
+  min-height:100%;
+  background:#2a0709;
+  color:var(--ink);
+  font-family:Avenir,"Avenir Next",-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  overflow-x:hidden;
+}
+button,input{font-family:inherit}
+.app{
+  width:100%;
+  max-width:var(--max);
+  min-height:100vh;
+  margin:0 auto;
+  background:
+    radial-gradient(circle at 8% 2%,rgba(217,139,43,.35),transparent 28%),
+    radial-gradient(circle at 88% 0%,rgba(255,255,255,.18),transparent 25%),
+    linear-gradient(180deg,#7b1017 0%,#e30613 28%,#f8dfcf 29%,#fff8ef 100%);
+  padding-bottom:calc(var(--navH) + 78px + env(safe-area-inset-bottom));
+  overflow:hidden;
+}
+
+/* views */
+body.view-home #homePage{display:flex}
+body.view-stats #statsPage{display:flex}
+body.view-manager #managerPage{display:flex}
+body.view-home #statsPage,body.view-home #managerPage{display:none}
+body.view-stats #homePage,body.view-stats #managerPage{display:none}
+body.view-manager #homePage,body.view-manager #statsPage{display:none}
+
+.hero{
+  color:white;
+  padding:18px var(--pad) 76px;
+  position:relative;
+  overflow:hidden;
+}
+.hero:before{
+  content:"";
+  position:absolute;
+  inset:-120px -80px auto -80px;
+  height:280px;
+  background:conic-gradient(from 90deg,rgba(255,255,255,.05),rgba(217,139,43,.32),rgba(255,255,255,.05),rgba(143,16,24,.30),rgba(255,255,255,.05));
+  animation:spin 13s linear infinite;
+}
+.hero-inner{position:relative;z-index:2}
+.top-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+.brand-lockup{
+  display:flex;
+  align-items:center;
+  gap:9px;
+}
+.tk-logo{
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  background:#c91927;
+  border:4px solid var(--orange);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:white;
+  font-size:17px;
+  font-weight:950;
+  letter-spacing:-.5px;
+  box-shadow:0 8px 18px rgba(0,0,0,.22);
+}
+.kt-wordmark{
+  line-height:1;
+}
+.kt-wordmark b{
+  display:block;
+  font-size:15px;
+  letter-spacing:.4px;
+}
+.kt-wordmark small{
+  font-size:11px;
+  color:rgba(255,255,255,.74);
+  font-weight:900;
+  text-transform:uppercase;
+}
+.live-pill{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  background:rgba(255,255,255,.16);
+  border:1px solid rgba(255,255,255,.24);
+  border-radius:999px;
+  padding:7px 10px;
+  font-size:11px;
+  font-weight:950;
+}
+.live-dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:#32d583;
+  box-shadow:0 0 0 0 rgba(50,213,131,.7);
+  animation:pulseDot 1.6s infinite;
+}
+.hero-title{
+  margin-top:24px;
+}
+.kicker{
+  display:inline-block;
+  background:rgba(255,255,255,.17);
+  border:1px solid rgba(255,255,255,.22);
+  border-radius:999px;
+  padding:7px 11px;
+  font-size:11px;
+  font-weight:950;
+  letter-spacing:.8px;
+  text-transform:uppercase;
+}
+.hero-title h1{
+  margin:10px 0 6px;
+  font-size:34px;
+  line-height:.97;
+  letter-spacing:-.7px;
+  font-weight:950;
+  text-shadow:0 8px 22px rgba(0,0,0,.25);
+}
+.hero-title p{
+  margin:0;
+  color:rgba(255,255,255,.80);
+  font-size:13px;
+  font-weight:800;
+}
+
+.page{
+  width:100%;
+  max-width:var(--max);
+  margin:-52px auto 0;
+  padding:0 var(--pad) calc(var(--navH) + 86px + env(safe-area-inset-bottom));
+  flex-direction:column;
+  gap:12px;
+  position:relative;
+  z-index:3;
+}
+.card{
+  width:100%;
+  margin:0;
+  padding:16px;
+  border-radius:24px;
+  background:rgba(255,253,248,.98);
+  border:1px solid rgba(143,16,24,.08);
+  box-shadow:0 14px 34px rgba(80,20,20,.13);
+  overflow:hidden;
+}
+.main-total{
+  background:
+    radial-gradient(circle at 15% 10%,rgba(255,255,255,.55),transparent 28%),
+    linear-gradient(145deg,#fff9f0,#f7decc);
+  border:1px solid rgba(217,139,43,.22);
+  text-align:center;
+  padding:18px;
+}
+.main-total .label{
+  color:var(--muted);
+  font-size:12px;
+  font-weight:950;
+  text-transform:uppercase;
+  letter-spacing:.6px;
+}
+.total-big{
+  margin:8px 0 6px;
+  font-size:64px;
+  font-weight:950;
+  line-height:1;
+  color:var(--red-dark);
+}
+.total-big span{
+  font-size:28px;
+  color:#a27663;
+}
+.week-note{
+  font-size:13px;
+  font-weight:900;
+  color:var(--muted);
+}
+.progress{
+  height:34px;
+  background:#efd4c8;
+  border-radius:999px;
+  overflow:hidden;
+  margin-top:14px;
+}
+.bar{
+  height:100%;
+  min-width:8%;
+  width:8%;
+  background:linear-gradient(90deg,#8f1018,#e30613,#d98b2b);
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  padding-right:11px;
+  font-size:12px;
+  font-weight:950;
+  border-radius:999px;
+  transition:.45s;
+}
+.remaining{
+  margin-top:10px;
+  font-size:14px;
+  font-weight:900;
+  color:var(--ink);
+}
+.donation-btn{
+  width:100%;
+  border:none;
+  border-radius:28px;
+  padding:20px 18px;
+  background:
+    radial-gradient(circle at 20% 15%,rgba(255,255,255,.36),transparent 24%),
+    linear-gradient(135deg,#8f1018 0%,#e30613 54%,#ff5a4e 100%);
+  color:white;
+  box-shadow:0 18px 36px rgba(227,6,19,.32);
+  display:grid;
+  grid-template-columns:72px 1fr;
+  align-items:center;
+  gap:14px;
+  text-align:left;
+  overflow:hidden;
+  position:relative;
+}
+.donation-btn:before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(105deg,transparent 15%,rgba(255,255,255,.25) 45%,transparent 70%);
+  transform:translateX(-120%);
+  animation:sweep 3s ease-in-out infinite;
+}
+.donation-icon{
+  position:relative;
+  z-index:1;
+  width:72px;
+  height:72px;
+  border-radius:50%;
+  background:#c91927;
+  border:4px solid var(--orange);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:25px;
+  font-weight:950;
+}
+.donation-copy{position:relative;z-index:1}
+.donation-copy b{
+  display:block;
+  font-size:24px;
+  line-height:1;
+  letter-spacing:.6px;
+  text-transform:uppercase;
+}
+.donation-copy small{
+  display:block;
+  margin-top:7px;
+  font-size:14px;
+  font-weight:850;
+  opacity:.92;
+}
+.donation-copy .mini-total{
+  display:inline-flex;
+  margin-top:10px;
+  padding:6px 10px;
+  background:rgba(255,255,255,.18);
+  border-radius:999px;
+  font-size:12px;
+  font-weight:950;
+}
+.quick-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+.mini-card{
+  min-height:116px;
+}
+.eyebrow{
+  color:var(--muted);
+  font-size:11px;
+  font-weight:950;
+  text-transform:uppercase;
+  letter-spacing:.6px;
+}
+.mini-card strong{
+  display:block;
+  margin-top:8px;
+  font-size:22px;
+  color:var(--red-dark);
+  line-height:1.05;
+  overflow-wrap:anywhere;
+}
+.mini-card small{
+  color:var(--muted);
+  font-weight:800;
+}
+.card-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  margin-bottom:10px;
+}
+.row,.activity-row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 0;
+  border-bottom:1px solid rgba(143,16,24,.08);
+}
+.row:last-child,.activity-row:last-child{border-bottom:none}
+.icon,.rank{
+  width:34px;
+  height:34px;
+  border-radius:13px;
+  background:linear-gradient(135deg,#8f1018,#d98b2b);
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:950;
+  flex:0 0 auto;
+}
+.row-name,.activity-main{
+  min-width:0;
+  overflow-wrap:anywhere;
+  font-weight:900;
+  color:var(--ink);
+}
+.row-score{
+  margin-left:auto;
+  font-size:19px;
+  font-weight:950;
+  color:var(--red-dark);
+}
+.activity-time{
+  font-size:12px;
+  color:var(--muted);
+  font-weight:800;
+  margin-top:2px;
+}
+.you-row{
+  background:#f9e2d6;
+  margin:0 -7px;
+  padding-left:7px;
+  padding-right:7px;
+  border-radius:14px;
+  border-bottom:none;
+}
+.input{
+  width:100%;
+  border:2px solid #efc6b6;
+  background:white;
+  border-radius:16px;
+  padding:15px;
+  font-size:23px;
+  font-weight:950;
+  text-align:center;
+  color:var(--ink);
+  margin:8px 0 12px;
+}
+.stats-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+.stat-box{
+  background:#fff6ee;
+  border:1px solid rgba(143,16,24,.07);
+  border-radius:16px;
+  padding:13px;
+}
+.stat-box b{
+  display:block;
+  margin-top:5px;
+  font-size:21px;
+  color:var(--red-dark);
+}
+.status{
+  margin-top:12px;
+  padding:13px;
+  border-radius:16px;
+  background:linear-gradient(135deg,#8f1018,#e30613);
+  color:white;
+  font-weight:950;
+  text-align:center;
+}
+.manager-summary{
+  white-space:pre-line;
+  background:#fff6ee;
+  border:1px solid rgba(143,16,24,.08);
+  border-radius:18px;
+  padding:15px;
+  font-weight:850;
+  line-height:1.42;
+}
+.action-list{
+  display:grid;
+  gap:10px;
+}
+.manager-action{
+  width:100%;
+  border:none;
+  border-radius:18px;
+  padding:15px;
+  text-align:left;
+  font-size:17px;
+  font-weight:950;
+  background:#fff6ee;
+  color:var(--red-dark);
+  border:1px solid rgba(143,16,24,.10);
+}
+.manager-action span{
+  display:block;
+  margin-top:5px;
+  color:var(--muted);
+  font-size:13px;
+  font-weight:800;
+}
+.manager-action.primary{
+  background:linear-gradient(135deg,#8f1018,#e30613);
+  color:white;
+}
+.manager-action.primary span{color:rgba(255,255,255,.82)}
+.manager-action.danger{
+  background:#fff0f0;
+  color:#9b0009;
+}
+.nav{
+  position:fixed;
+  left:50%;
+  bottom:calc(10px + env(safe-area-inset-bottom));
+  transform:translateX(-50%);
+  width:calc(100% - 28px);
+  max-width:402px;
+  height:var(--navH);
+  border-radius:22px;
+  background:rgba(45,14,12,.96);
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  z-index:80;
+  overflow:hidden;
+  box-shadow:0 14px 34px rgba(0,0,0,.32);
+}
+.nav button{
+  border:none;
+  background:transparent;
+  color:rgba(255,255,255,.84);
+  font-size:12px;
+  font-weight:900;
+}
+.nav span{
+  display:block;
+  font-size:22px;
+  margin-bottom:3px;
+}
+.overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.62);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  z-index:99;
+}
+.popup{
+  width:100%;
+  max-width:390px;
+  background:#fffaf4;
+  border-radius:28px;
+  padding:26px 20px;
+  text-align:center;
+  box-shadow:0 24px 50px rgba(0,0,0,.34);
+}
+.popup h1{margin:8px 0;color:var(--red-dark);font-size:32px}
+.popup p{font-size:18px;color:var(--ink)}
+.popup input{width:100%;padding:16px;border:2px solid #efc6b6;border-radius:16px;font-size:22px;text-align:center;margin:14px 0}
+.main-btn{width:100%;border:none;border-radius:17px;padding:16px;background:linear-gradient(135deg,#8f1018,#e30613);color:white;font-size:20px;font-weight:950}
+.bell{
+  position:fixed;
+  left:50%;
+  top:16px;
+  transform:translateX(-50%) translateY(-120px);
+  width:calc(100% - 32px);
+  max-width:390px;
+  z-index:999;
+  background:linear-gradient(135deg,#8f1018,#e30613,#d98b2b);
+  color:white;
+  border-radius:22px;
+  padding:14px 16px;
+  box-shadow:0 18px 34px rgba(143,16,24,.36);
+  display:flex;
+  align-items:center;
+  gap:11px;
+  opacity:0;
+  transition:.35s ease;
+  pointer-events:none;
+}
+.bell.show{transform:translateX(-50%) translateY(0);opacity:1}
+.bell-icon{width:42px;height:42px;border-radius:15px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;font-size:23px;flex:0 0 auto}
+.bell-title{font-weight:950;font-size:16px;text-transform:uppercase}.bell-sub{font-size:13px;font-weight:800;opacity:.92;margin-top:2px}
+.sound-toggle{
+  position:fixed;
+  right:14px;
+  bottom:calc(90px + env(safe-area-inset-bottom));
+  z-index:90;
+  border:none;
+  border-radius:999px;
+  background:rgba(45,14,12,.92);
+  color:white;
+  padding:9px 11px;
+  font-weight:900;
+  box-shadow:0 8px 18px rgba(0,0,0,.22);
+}
+.confetti{position:fixed;top:-20px;width:10px;height:18px;z-index:120;pointer-events:none;animation:fall 1.8s linear forwards}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulseDot{70%{box-shadow:0 0 0 9px rgba(50,213,131,0)}100%{box-shadow:0 0 0 0 rgba(50,213,131,0)}}
+@keyframes sweep{0%,48%{transform:translateX(-120%)}78%,100%{transform:translateX(120%)}}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:.85}}
+@media(max-width:380px){
+  :root{--pad:12px}
+  .hero-title h1{font-size:31px}
+  .total-big{font-size:58px}
+}
+</style>
+</head>
+
+<body class="view-home">
+<div class="bell" id="donationBellBanner"><div class="bell-icon">🔔</div><div><div class="bell-title">Thank You!</div><div class="bell-sub" id="donationBellText">£1 donation secured</div></div></div>
+<button class="sound-toggle" id="soundToggle" onclick="toggleDonationSound()">🔇 Sound Off</button>
+
+<div class="app">
+<header class="hero">
+  <div class="hero-inner">
+    <div class="top-row">
+      <div class="brand-lockup">
+        <div class="tk-logo">TK</div>
+        <div class="kt-wordmark"><b>King's Trust</b><small>£1 donations</small></div>
+      </div>
+      <div class="live-pill"><span class="live-dot"></span><span id="liveStatus">Live</span></div>
+    </div>
+    <div class="hero-title">
+      <div class="kicker">Valegate</div>
+      <h1>£1 Donation<br>Tracker</h1>
+      <p>Weekly target runs Sunday to Saturday night</p>
+    </div>
+  </div>
+</header>
+
+<main class="page" id="homePage">
+  <section class="card main-total">
+    <div class="label">This Week Raised</div>
+    <div class="total-big">£<span id="weekTotalMain">0</span> <span>/ £180</span></div>
+    <div class="week-note">Sunday → Saturday</div>
+    <div class="progress"><div class="bar" id="bar">0%</div></div>
+    <div class="remaining">£<b id="remaining">180</b> left to hit target</div>
+  </section>
+
+  <button class="donation-btn" onclick="addDonation()">
+    <div class="donation-icon">£1</div>
+    <div class="donation-copy">
+      <b>Add £1 Donation</b>
+      <small>Tap once when a customer donates</small>
+      <div class="mini-total">Today £<span id="todayTotal">0</span></div>
+    </div>
+  </button>
+
+  <section class="quick-grid">
+    <div class="card mini-card">
+      <div class="eyebrow">👑 Today's Leader</div>
+      <strong id="dailyLeader">No leader yet</strong>
+      <small id="dailyLeaderDonations">£0 today</small>
+    </div>
+    <div class="card mini-card">
+      <div class="eyebrow">🏆 Weekly Champ</div>
+      <strong id="weeklyChampion">No champion yet</strong>
+      <small id="weeklyChampionDonations">£0 this week</small>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-head"><div class="eyebrow">Live Activity</div><div>✨</div></div>
+    <div id="activityFeed"><p style="color:#7c625a">No donations yet today.</p></div>
+  </section>
+
+  <section class="card">
+    <div class="card-head"><div class="eyebrow">Today's Top Fundraisers</div><div>🏅</div></div>
+    <div id="leaderboard"><p style="color:#7c625a">Loading leaderboard...</p></div>
+  </section>
+</main>
+
+<main class="page" id="statsPage">
+  <section class="card main-total">
+    <div class="label">Weekly Progress</div>
+    <div class="total-big">£<span id="statsWeekTotal">0</span> <span>/ £180</span></div>
+    <div class="progress"><div class="bar" id="statsBar">0%</div></div>
+    <div class="remaining">Sunday to Saturday night</div>
+  </section>
+  <section class="card">
+    <div class="card-head"><div class="eyebrow">Donation Conversion</div><div>📊</div></div>
+    <div class="eyebrow">Customers today</div>
+    <input class="input" id="conversionCustomerInput" type="number" inputmode="numeric" placeholder="Enter footfall" oninput="saveConversionCustomers()">
+    <div class="stats-grid">
+      <div class="stat-box"><div class="eyebrow">Current</div><b id="conversionNow">-</b><small>customers per donation</small></div>
+      <div class="stat-box"><div class="eyebrow">Target</div><b>1 in 50</b><small>Donation goal</small></div>
+      <div class="stat-box"><div class="eyebrow">Expected</div><b id="expectedDonations">0</b><small>donations needed</small></div>
+      <div class="stat-box"><div class="eyebrow">Gap</div><b id="conversionGap">0</b><small>more donations</small></div>
+    </div>
+    <div class="status" id="conversionStatus">Enter today’s customer count to calculate conversion.</div>
+  </section>
+  <section class="card">
+    <div class="card-head"><div class="eyebrow">Weekly Top Fundraisers</div><div>🏆</div></div>
+    <div id="weeklyLeaderboard"></div>
+  </section>
+</main>
+
+<main class="page" id="managerPage">
+  <section class="card">
+    <div class="card-head"><div class="eyebrow">Manager Dashboard</div><div>📊</div></div>
+    <div class="manager-summary" id="managerPageText">Loading manager summary...</div>
+  </section>
+  <section class="card">
+    <div class="card-head"><div class="eyebrow">Last Donation Entry</div><div>↩️</div></div>
+    <div class="manager-summary" id="lastDonationBox">No donations yet today.</div>
+  </section>
+  <section class="card">
+    <div class="card-head"><div class="eyebrow">Manager Options</div><div>⚙️</div></div>
+    <div class="action-list">
+      <button class="manager-action primary" onclick="copySummary()">Copy Daily Summary<span>Copies today’s update, leaderboard and conversion.</span></button>
+      <button class="manager-action danger" onclick="deleteLastDonation()">Delete Last Donation<span>Use this if someone double-pressed by mistake.</span></button>
+      <button class="manager-action" onclick="resetToday()">Reset Today<span>Clears only today’s donations. Code required.</span></button>
+      <button class="manager-action danger" onclick="resetAllTotals()">Reset All Totals<span>Clears every donation entry. Code required.</span></button>
+    </div>
+  </section>
+</main>
+
+<nav class="nav">
+  <button onclick="showHome()"><span>🏠</span>Home</button>
+  <button onclick="showStats()"><span>📈</span>Stats</button>
+  <button onclick="showManagerPage()"><span>⚙️</span>Manager</button>
+  <button onclick="openName()"><span>👤</span>Me</button>
+</nav>
+</div>
+
+<div class="overlay" id="nameOverlay"><div class="popup"><div class="tk-logo" style="margin:0 auto">TK</div><h1>Your Name</h1><p>Enter your name once. Every donation after that is one tap.</p><input id="nameInput" placeholder="Type your name"><button class="main-btn" onclick="saveName()">Save Name</button></div></div>
+<div class="overlay" id="successOverlay"><div class="popup"><div class="tk-logo" style="margin:0 auto">TK</div><h1 id="successTitle">Thank You!</h1><p><b id="successName">You</b> secured a £1 donation for The King's Trust.</p><div class="total-big" style="font-size:48px;margin:10px 0">+£1</div><p>This Week Raised</p><div class="total-big" style="font-size:48px">£<span id="successTotal">0</span> <span>/ £180</span></div><button class="main-btn" onclick="closeSuccess()">Press to Continue</button></div></div>
+
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+import{getDatabase,ref,push,onValue,remove,serverTimestamp}from"https://www.gstatic.com/firebasejs/10.12.5/firebase-database.js";
+const firebaseConfig={apiKey:"AIzaSyB1mIRzjLZTE8MhH6ArcXtFxrHNsDN79SE",authDomain:"treasure-tracker-2389e.firebaseapp.com",databaseURL:"https://treasure-tracker-2389e-default-rtdb.europe-west1.firebasedatabase.app",projectId:"treasure-tracker-2389e",storageBucket:"treasure-tracker-2389e.firebasestorage.app",messagingSenderId:"551389312479",appId:"1:551389312479:web:7f69c16804fde452c0806a",measurementId:"G-JXNGBP00KR"};
+const WEEKLY_TARGET=180,CONVERSION_TARGET=50,MANAGER_PIN="6530",RESET_PIN="0356";
+const DONATION_PATH="kings-trust/valegate/donations";
+const app=initializeApp(firebaseConfig),db=getDatabase(app),entriesRef=ref(db,DONATION_PATH);
+let localName=localStorage.getItem("kingsTrustName")||"",entries=[],lastTotalSeen=0,customers=parseInt(localStorage.getItem("kingsTrustCustomers")||"0",10)||0,donationSoundOn=localStorage.getItem("donationSoundOn")==="true";
+function todayKey(){return new Date().toISOString().slice(0,10)}
+function weekKey(dateString){const d=new Date(dateString+"T00:00:00"),onejan=new Date(d.getFullYear(),0,1);return d.getFullYear()+"-W"+Math.ceil((((d-onejan)/86400000)+onejan.getDay()+1)/7)}
+function thisWeekKey(){return weekKey(todayKey())}
+function getWeekRange(){const now=new Date();const start=new Date(now);start.setDate(now.getDate()-now.getDay());start.setHours(0,0,0,0);const end=new Date(start);end.setDate(start.getDate()+6);end.setHours(23,59,59,999);return{start,end}}
+function todayEntries(){return entries.filter(e=>e.date===todayKey())}
+function weekEntries(){const r=getWeekRange();return entries.filter(e=>{const d=new Date((e.date||"")+"T12:00:00");return d>=r.start&&d<=r.end})}
+function countByName(list){const c={};list.forEach(e=>c[e.name]=(c[e.name]||0)+1);return c}
+function todayCounts(){return countByName(todayEntries())}
+function weekCounts(){return countByName(weekEntries())}
+window.openName=function(){document.getElementById("nameInput").value=localName;document.getElementById("nameOverlay").style.display="flex"}
+window.saveName=function(){const n=document.getElementById("nameInput").value.trim();if(!n){alert("Please type your name first.");return}localName=n;localStorage.setItem("kingsTrustName",n);document.getElementById("nameOverlay").style.display="none";render()}
+window.closeSuccess=function(){document.getElementById("successOverlay").style.display="none"}
+window.addDonation=function(){if(!localName){openName();return}push(entriesRef,{store:"Valegate",charity:"Kings Trust",name:localName,amount:1,date:todayKey(),week:thisWeekKey(),time:new Date().toISOString(),createdAt:serverTimestamp()}).then(()=>{confetti();donationFeedback(localName);document.getElementById("successName").textContent=localName;document.getElementById("successTitle").textContent="Thank You!";document.getElementById("successOverlay").style.display="flex"}).catch(err=>alert("Could not save donation: "+err.message))}
+function setView(view){document.body.classList.remove("view-home","view-stats","view-manager");document.body.classList.add("view-"+view);render();window.scrollTo({top:0,behavior:"smooth"})}
+window.showHome=function(){setView("home")}
+window.showStats=function(){setView("stats")}
+window.showManagerPage=function(){const pin=prompt("Manager access code:");if(pin!==MANAGER_PIN){alert("Incorrect manager code.");return}setView("manager")}
+window.saveConversionCustomers=function(){customers=parseInt(document.getElementById("conversionCustomerInput").value||"0",10)||0;localStorage.setItem("kingsTrustCustomers",customers);render()}
+window.copySummary=function(){navigator.clipboard.writeText(document.getElementById("managerPageText").innerText).then(()=>alert("Daily summary copied."))}
+window.deleteLastDonation=function(){const pin=prompt("Manager code:");if(pin!==MANAGER_PIN){alert("Incorrect manager code.");return}const last=todayEntries().slice(-1)[0];if(!last){alert("No donations to delete today.");return}if(confirm("Delete last £1 donation from "+last.name+"?")){remove(ref(db,DONATION_PATH+"/"+last.id)).then(()=>alert("Last donation deleted.")).catch(err=>alert("Could not delete last donation: "+err.message))}}
+window.resetToday=function(){const pin=prompt("Reset code:");if(pin!==RESET_PIN){alert("Incorrect reset code.");return}if(confirm("Reset today's King's Trust donations?")){Promise.all(todayEntries().map(e=>remove(ref(db,DONATION_PATH+"/"+e.id)))).then(()=>alert("Today reset."))}}
+window.resetAllTotals=function(){const pin=prompt("Reset ALL totals code:");if(pin!==RESET_PIN){alert("Incorrect reset code.");return}const confirmText=prompt("Type RESET ALL to clear every donation entry:");if(confirmText!=="RESET ALL"){alert("Reset cancelled.");return}remove(entriesRef).then(()=>alert("All donation totals have been reset.")).catch(err=>alert("Could not reset all totals: "+err.message))}
+function render(){
+ const todayTotal=todayEntries().length,weekTotal=weekEntries().length,pct=Math.min(100,Math.round((weekTotal/WEEKLY_TARGET)*100)),list=Object.entries(todayCounts()).sort((a,b)=>b[1]-a[1]),wList=Object.entries(weekCounts()).sort((a,b)=>b[1]-a[1]),expected=customers?Math.ceil(customers/CONVERSION_TARGET):0,gap=Math.max(0,expected-todayTotal),conv=todayTotal>0&&customers?Math.round(customers/todayTotal):0;
+ document.getElementById("weekTotalMain").textContent=weekTotal;document.getElementById("statsWeekTotal").textContent=weekTotal;document.getElementById("todayTotal").textContent=todayTotal;document.getElementById("remaining").textContent=Math.max(0,WEEKLY_TARGET-weekTotal);document.getElementById("successTotal").textContent=weekTotal;document.getElementById("bar").style.width=Math.max(8,pct)+"%";document.getElementById("bar").textContent=pct+"%";document.getElementById("statsBar").style.width=Math.max(8,pct)+"%";document.getElementById("statsBar").textContent=pct+"%";document.getElementById("nameText")&& (document.getElementById("nameText").textContent=localName||"Team");
+ document.getElementById("dailyLeader").textContent=list.length?list[0][0]:"No leader yet";document.getElementById("dailyLeaderDonations").textContent=list.length?"£"+list[0][1]+" today":"£0 today";document.getElementById("weeklyChampion").textContent=wList.length?wList[0][0]:"No champion yet";document.getElementById("weeklyChampionDonations").textContent=wList.length?"£"+wList[0][1]+" this week":"£0 this week";
+ document.getElementById("conversionCustomerInput").value=customers||"";document.getElementById("expectedDonations").textContent=expected;document.getElementById("conversionGap").textContent=gap;document.getElementById("conversionNow").textContent=conv?("1 in "+conv):"-";document.getElementById("conversionStatus").textContent=!customers?"Enter today’s customer count to calculate conversion.":todayTotal>=expected?"On target — great donation conversion today.":"Need "+gap+" more donation"+(gap===1?"":"s")+" to hit 1 in "+CONVERSION_TARGET+".";
+ document.getElementById("managerPageText").textContent=["KING'S TRUST UPDATE","","TODAY","Donations Today: £"+todayTotal,"Leader: "+(list.length?list[0][0]+" (£"+list[0][1]+")":"No leader yet"),"","WEEK","Week Total: £"+weekTotal+" / £"+WEEKLY_TARGET,"Remaining: £"+Math.max(0,WEEKLY_TARGET-weekTotal),"Weekly Champion: "+(wList.length?wList[0][0]+" (£"+wList[0][1]+")":"No champion yet"),"Week Runs: Sunday to Saturday night","","CONVERSION","Customers: "+(customers||"Not entered"),"Current: "+(conv?("1 in "+conv):"-"),"Target: 1 in "+CONVERSION_TARGET,"Expected Donations: "+expected,"Conversion Gap: "+gap].join("\\n");
+ const last=todayEntries().slice(-1)[0];document.getElementById("lastDonationBox").innerHTML=last?("<b>"+last.name+"</b><br><small>"+new Date(last.time).toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"})+" · Last donation logged today</small>"):"No donations yet today.";
+ renderLeaderboard(list);renderWeeklyLeaderboard(wList);renderActivity();
+}
+function renderLeaderboard(list){const lb=document.getElementById("leaderboard");lb.innerHTML="";if(!list.length){lb.innerHTML="<p style='color:#7c625a'>No donations logged yet today.</p>";return}list.forEach((x,i)=>{const row=document.createElement("div");row.className="row"+(x[0]===localName?" you-row":"");const medal=i===0?"🥇":i===1?"🥈":i===2?"🥉":i+1;row.innerHTML='<div class="rank">'+medal+'</div><div class="row-name">'+x[0]+(x[0]===localName?' (You)':'')+'</div><div class="row-score">£'+x[1]+'</div>';lb.appendChild(row)})}
+function renderWeeklyLeaderboard(list){const box=document.getElementById("weeklyLeaderboard");box.innerHTML="";if(!list.length){box.innerHTML="<p style='color:#7c625a'>No donations logged this week.</p>";return}list.slice(0,8).forEach((x,i)=>{const row=document.createElement("div");row.className="row";row.innerHTML='<div class="rank">'+(i+1)+'</div><div class="row-name">'+x[0]+'</div><div class="row-score">£'+x[1]+'</div>';box.appendChild(row)})}
+function renderActivity(){const feed=document.getElementById("activityFeed"),recent=todayEntries().slice(-5).reverse();feed.innerHTML="";if(!recent.length){feed.innerHTML="<p style='color:#7c625a'>No donations yet today.</p>";return}recent.forEach(e=>{const row=document.createElement("div");row.className="activity-row";row.innerHTML='<div class="icon">£1</div><div><div class="activity-main">'+e.name+' secured a £1 donation</div><div class="activity-time">'+timeAgo(e.time)+'</div></div>';feed.appendChild(row)})}
+function timeAgo(iso){const diff=Math.max(0,Date.now()-new Date(iso).getTime()),mins=Math.floor(diff/60000);if(mins<1)return"Just now";if(mins===1)return"1 min ago";if(mins<60)return mins+" mins ago";const hrs=Math.floor(mins/60);return hrs===1?"1 hour ago":hrs+" hours ago"}
+function updateSoundToggle(){const btn=document.getElementById("soundToggle");btn.textContent=donationSoundOn?"🔔 Sound On":"🔇 Sound Off"}
+window.toggleDonationSound=function(){donationSoundOn=!donationSoundOn;localStorage.setItem("donationSoundOn",donationSoundOn?"true":"false");updateSoundToggle();if(donationSoundOn)playDonationSound()}
+function playDonationSound(){if(!donationSoundOn)return;try{const AudioContext=window.AudioContext||window.webkitAudioContext;if(!AudioContext)return;const ctx=new AudioContext(),osc=ctx.createOscillator(),gain=ctx.createGain();osc.type="sine";osc.frequency.setValueAtTime(660,ctx.currentTime);osc.frequency.setValueAtTime(880,ctx.currentTime+0.08);gain.gain.setValueAtTime(0.0001,ctx.currentTime);gain.gain.exponentialRampToValueAtTime(0.08,ctx.currentTime+0.02);gain.gain.exponentialRampToValueAtTime(0.0001,ctx.currentTime+0.24);osc.connect(gain);gain.connect(ctx.destination);osc.start();osc.stop(ctx.currentTime+0.26)}catch(e){}}
+function donationFeedback(name){try{if(navigator.vibrate)navigator.vibrate([80,40,80])}catch(e){}playDonationSound();const b=document.getElementById("donationBellBanner"),t=document.getElementById("donationBellText");t.textContent=(name||"Someone")+" secured a £1 donation";b.classList.add("show");clearTimeout(window.__bell);window.__bell=setTimeout(()=>b.classList.remove("show"),2600)}
+function confetti(){const colors=["#e30613","#8f1018","#d98b2b","#fffaf4","#ffffff"];for(let i=0;i<85;i++){const c=document.createElement("div");c.className="confetti";c.style.left=Math.random()*100+"vw";c.style.background=colors[Math.floor(Math.random()*colors.length)];c.style.animationDelay=Math.random()*0.6+"s";document.body.appendChild(c);setTimeout(()=>c.remove(),2500)}}
+function milestoneCheck(newTotal){if(newTotal>lastTotalSeen&&[10,50,100,180].includes(newTotal)){document.getElementById("successTitle").textContent=newTotal===180?"Weekly Target Achieved!":newTotal===100?"Big Push!":newTotal===50?"Great Momentum!":"Great Start!";document.getElementById("successName").textContent="Valegate";document.getElementById("successOverlay").style.display="flex";confetti()}lastTotalSeen=newTotal}
+onValue(entriesRef,snapshot=>{const val=snapshot.val()||{};entries=Object.entries(val).map(([id,data])=>({id,...data}));document.getElementById("liveStatus").textContent="Live";const currentTotal=weekEntries().length;render();milestoneCheck(currentTotal)},error=>{document.getElementById("liveStatus").textContent="Error";alert("Firebase error: "+error.message)})
+setTimeout(()=>{updateSoundToggle();if(!localName)openName()},500)
+</script>
+</body>
+</html>
